@@ -1,41 +1,57 @@
 <template>
   <div class="post">
-    <label>Post Title<input v-model="title" type="text"></label>
-    <label>Text Body<input v-model="body" type="text"></label>
-    <button @click="submitPost">Submit Post</button>
+    <HeaderCard :headerCardOptions="config"/>
+    <PostLink v-if="typeIsLink"/>
+    <PostText v-if="!typeIsLink"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import firebase from 'firebase'
+import HeaderCard from '@/components/Home/HeaderCard'
+import PostText from '@/components/Post/PostText'
+import PostLink from '@/components/Post/PostLink'
 
 export default {
   name: 'Post',
+  created() {
+    this.updateConfig(this.$route.params.type)
+  },
+  watch: {
+    '$route'({ params: { type }}) {
+      this.updateConfig(type)
+    }
+  },
+  components: { HeaderCard, PostText, PostLink },
   computed: {
     ...mapGetters({
       user: 'currentUser' 
-    })
-  },
-  data() {
-    return {
-      title: '',
-      body: ''
+    }),
+    typeIsLink() {
+      return this.$route.params.type === 'link'
     }
   },
   methods: {
-    submitPost() {
-      firebase.database().ref('posts').push({
-        title: this.title,
-        body: this.body,
-        date: firebase.database.ServerValue.TIMESTAMP,
-        author_id: this.user.uid
-      })
+    updateConfig(postType) {
+      const title = this.typeIsLink
+        ? 'Submit a Link'
+        : 'Submit a Text Post'
+      this.config = {
+        title,
+        list: [
+          ['Link', 'link'],
+          ['Text', 'text']
+        ]
+      }
     }
-  }
+  },
+  data() {
+    return {
+      config: {}
+    }
+  },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

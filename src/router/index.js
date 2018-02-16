@@ -31,15 +31,16 @@ let router = new Router({
       component: SignUp
     },
     {
-      path: '/home',
+      path: '/home/:type?',
       name: 'Home',
       component: Home,
+      // Too much recursion?
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/post',
+      path: '/post/:type',
       name: 'Post',
       component: Post,
       meta: {
