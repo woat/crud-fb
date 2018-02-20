@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import firebase from 'firebase';
 import PostList from '@/components/Home/PostList'
 import HeaderCard from '@/components/Home/HeaderCard'
 

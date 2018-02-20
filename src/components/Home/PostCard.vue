@@ -6,9 +6,9 @@
         <div class="card__scoring--score">1010</div>
         <i class="card__scoring--caret fas fa-caret-down"></i>
       </div>
-      <img class="card__image" :src="post.thumb" />
+      <img class="card__image" :src="post.img" />
       <div class="card__info">
-        <router-link to="#">{{ post.title }}</router-link>
+        <router-link :to="{ path: `comments/${postKey}` }">{{ post.title }}</router-link>
         <div class="card__info--subheader">{{ post.date }} by {{ post.author_id }}</div>
         <div class="card__info--lower">comments share</div>
         <button @click="removePost()">remove</button>

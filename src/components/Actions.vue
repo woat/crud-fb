@@ -3,11 +3,11 @@
     <div class="shadow">
       <div class="card">
         <h1>Create a new post</h1>
-        <router-link to="/post/link" class="card__button">
+        <router-link to="/submit/link" class="card__button">
           Submit a link
           <i class="fas fa-link fa-2x"></i>
         </router-link>
-        <router-link to="/post/text" class="card__button">
+        <router-link to="/submit/text" class="card__button">
           Submit a text post
           <i class="fas fa-comment fa-2x"></i>
         </router-link>

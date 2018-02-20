@@ -1,7 +1,7 @@
 <template>
   <div class="HeaderCard">
     <h1 class="title">{{ headerCardOptions.title }}</h1>
-    <HeaderSubCard class="header-sub-card" :listItems="headerCardOptions.list"/>
+    <HeaderSubCard v-if="headerCardOptions.list" class="header-sub-card" :listItems="headerCardOptions.list"/>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
   height: 27rem;
   background: var(--turq);
   align-items: center;
-  border-radius: 3px;
+  border-radius: 3px 3px 0 0;
 }
 
 .title {

@@ -10,11 +10,11 @@
 import { mapGetters } from 'vuex'
 import firebase from 'firebase'
 import HeaderCard from '@/components/Home/HeaderCard'
-import PostText from '@/components/Post/PostText'
-import PostLink from '@/components/Post/PostLink'
+import PostText from '@/components/Submit/PostText'
+import PostLink from '@/components/Submit/PostLink'
 
 export default {
-  name: 'Post',
+  name: 'Submit',
   created() {
     this.updateConfig(this.$route.params.type)
   },

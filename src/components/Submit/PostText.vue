@@ -40,9 +40,10 @@ export default {
   },
   methods: {
     submitPost() {
-      firebase.database().ref('posts/text').push({
+      firebase.database().ref('posts').push({
         thumb: this.thumb,
         title: this.title,
+        img: 'http://via.placeholder.com/160x80',
         body: this.body,
         date: firebase.database.ServerValue.TIMESTAMP,
         author_id: this.user.uid

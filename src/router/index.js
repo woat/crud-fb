@@ -5,7 +5,8 @@ import firebase from 'firebase'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
-import Post from '@/components/Post'
+import Submit from '@/components/Submit'
+import Comments from '@/components/Comments'
 
 
 Vue.use(Router)
@@ -40,9 +41,17 @@ let router = new Router({
       }
     },
     {
-      path: '/post/:type',
-      name: 'Post',
-      component: Post,
+      path: '/submit/:type',
+      name: 'Submit',
+      component: Submit,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/comments/:id',
+      name: 'Comments',
+      component: Comments,
       meta: {
         requiresAuth: true
       }
