@@ -1,6 +1,7 @@
 <template>
   <div class="SignUp">
     <div class="inputs">
+      <input v-model="username" type="text" placeholder="Username">
       <input v-model="email" type="text" placeholder="Email" />
       <input v-model="password" type="password" placeholder="Password" />
     </div>
@@ -16,21 +17,27 @@ export default {
   name: 'SignUp',
   data () {
     return {
+      username: '',
       email: '',
       password: ''
     }
   },
   methods: {
-    async signUp() {
-      let error = false
-      const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .catch(err => {
-          alert(err)
-          error = true
+    signUp() {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          const userInfo = user.providerData[0]
+          user.updateProfile({ displayName: this.username })
+          firebase.database().ref(`users/${user.uid}`).set({
+            username: this.username,
+            email: userInfo.email
+          })
+          this.$store.commit('loginUser', user)
+          this.$router.push('home')
+        },
+        (err) => {
+          console.log(err)
         })
-      if (error) return
-      alert('Your account has been created!')
-      this.$router.replace('hello')
     }
   }
 }

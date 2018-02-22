@@ -7,6 +7,7 @@ import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import Submit from '@/components/Submit'
 import Comments from '@/components/Comments'
+import Profile from '@/components/Profile'
 
 
 Vue.use(Router)
@@ -52,6 +53,14 @@ let router = new Router({
       path: '/comments/:id',
       name: 'Comments',
       component: Comments,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile/:username?',
+      name: 'Profile',
+      component: Profile,
       meta: {
         requiresAuth: true
       }

@@ -18,7 +18,7 @@
             <a :href="post.link">{{ post.title }}</a>
           </div>
           <div class="card__subtitle">
-            submitted {{ timeFromNow }} -- <router-link class="card__subtitle--author" to="#">{{ post.author_id }}</router-link>
+            submitted {{ timeFromNow }} -- <router-link class="card__subtitle--author" :to="{path: `/profile/${username}`}">{{ username }}</router-link>
           </div>
         </div>
       </div>
@@ -46,9 +46,25 @@ import { mapGetters } from 'vuex'
 import moment from 'moment'
 
 export default {
+  created() {
+    this.getUsernameFromAuthor()
+  },
   name: 'PostBody',
   props: ['post'],
+  data() {
+    return {
+      username: ''
+    }
+  },
   methods: {
+    getUsernameFromAuthor() {
+      firebase
+        .database()
+        .ref(`users/${this.post.author_id}`)
+        .once('value', (snap) => {
+          this.username = snap.val().username
+      })
+    },
     voteUp() {
       const payload = {
         score: this.post.score,

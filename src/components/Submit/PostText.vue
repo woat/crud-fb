@@ -13,6 +13,7 @@
         <h3>Thumbnail</h3>
         <input v-model="thumb" type="text">
       </label>
+        {{ user.providerData }}
       <div class="post__buttons">
         <button class="post__button" @click="submitPost">Submit</button>
         <button class="post__button" @click="test">test</button>
