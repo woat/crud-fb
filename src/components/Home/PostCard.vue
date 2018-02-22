@@ -2,12 +2,12 @@
   <div class="PostCard">
     <div class="card">
       <div class="card__scoring">
-        <div @click="voteUp">
-          <i class="card__scoring--caret fas fa-caret-up"></i>
+        <div @click="voteUp" :class="{ 'card__scoring--active-up': active }" >
+          <i class="card__scoring--caret card__scoring--caret-up fas fa-caret-up" ></i>
         </div>
         <div class="card__scoring--score">{{ post.score }}</div>
-        <div @click="voteDown">
-          <i class="card__scoring--caret fas fa-caret-down"></i>
+        <div @click="voteDown" :class="{ 'card__scoring--active-down': active === false }">
+          <i class="card__scoring--caret card__scoring--caret-down fas fa-caret-down"></i>
         </div>
       </div>
       <img class="card__image" :src="post.img" />
@@ -105,7 +105,7 @@ export default {
       payload.score -= 1
       payload.votes[this.user.uid] = false
       firebase.database().ref('posts').child(this.postKey).update(payload)
-    }
+    },
   },
   computed: {
     displayCommentsLength() {
@@ -115,6 +115,11 @@ export default {
     },
     timeFromNow() {
       return moment(this.post.date).fromNow()
+    },
+    active() {
+      if (this.post.votes) {
+        return !!this.post.votes[this.user.uid]
+      }
     },
     ...mapGetters({
       user: 'currentUser' 
@@ -160,12 +165,19 @@ export default {
   transition: all 0.2s ease;
 }
 
-.card__scoring--caret:hover{
+.card__scoring--caret-up:hover{
   color: var(--turq);
 }
 
-/* Last arrow is down arrow */
-.card__scoring--caret:hover:last-child{
+.card__scoring--caret-down:hover:last-child{
+  color: var(--crimson);
+}
+
+.card__scoring--active-up > * {
+  color: var(--turq);
+}
+
+.card__scoring--active-down > * {
   color: var(--crimson);
 }
 

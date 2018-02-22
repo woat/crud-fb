@@ -4,6 +4,9 @@
       <div class="navi__bar--left">
         <router-link to="/home">My Subreddits</router-link>
       </div>
+      <div>
+        <h1 style="color: red">logged: {{ user }} // uid: {{ cu.uid }}</h1>
+       </div>
       <div class="navi__bar--right">
         <router-link v-if="!user" to="/login">Login</router-link>
         <router-link v-if="!user" to="/sign-up">SignUp</router-link>
@@ -21,7 +24,8 @@ export default {
   name: 'Navi',
   computed: {
     ...mapGetters({
-      user: 'loggedIn'
+      user: 'loggedIn',
+      cu: 'currentUser'
     })
   },
   data() {

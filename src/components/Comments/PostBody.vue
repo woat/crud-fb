@@ -2,20 +2,32 @@
   <div class="PostBody">
     <div class="card">
       <div class="card__header">
-        <div class="card__header--title">
-          <a :href="post.link">{{ post.title }}</a>
+        <div class="card__header--left">
+          <div class="card__scoring">
+            <div @click="voteUp" :class="{ 'card__scoring--active-up': active }" >
+              <i class="card__scoring--caret card__scoring--caret-up fas fa-caret-up" ></i>
+            </div>
+            <div class="card__scoring--score">{{ post.score }}</div>
+            <div @click="voteDown" :class="{ 'card__scoring--active-down': active === false }">
+              <i class="card__scoring--caret card__scoring--caret-down fas fa-caret-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card__header--main">
+          <div class="card__title">
+            <a :href="post.link">{{ post.title }}</a>
+          </div>
+          <div class="card__subtitle">
+            submitted {{ timeFromNow }} -- <router-link class="card__subtitle--author" to="#">{{ post.author_id }}</router-link>
+          </div>
         </div>
       </div>
-      <div class="card__subheader">
-        submitted {{ timeFromNow }} -- <router-link class="card__subheader--author" to="#">{{ post.author_id }}</router-link>
-      </div>
+
       <div class="card__body">
         <div class="card__body--image" v-if="isThisPostALink">
           <img :src="post.img" />
         </div>
-        <div class="card__body--text" v-else>
-          {{ post.body }}
-        </div>
+        <div class="card__body--text" v-else>{{ post.body }}</div>
       </div>
       <div class="card__footer">
         <ul class="card__footer--list">
@@ -30,11 +42,68 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import moment from 'moment'
 
 export default {
   name: 'PostBody',
   props: ['post'],
+  methods: {
+    voteUp() {
+      const payload = {
+        score: this.post.score,
+        votes: this.post.votes || {}
+      }
+
+      // Case for if ALREADY VOTED
+      if (payload.votes.hasOwnProperty(this.user.uid)) {
+        const isADownvote = payload.votes[this.user.uid] === false
+
+        if (isADownvote) {
+          payload.score = this.post.score + 2
+          payload.votes[this.user.uid] = true
+        } else {
+          payload.score = this.post.score - 1
+          payload.votes[this.user.uid] = null
+        }
+
+        firebase.database().ref('posts').child(this.$route.params.id).update(payload)
+        return
+      }
+
+      // Base case - NEW VOTE
+      payload.score += 1
+      payload.votes[this.user.uid] = true
+      firebase.database().ref('posts').child(this.$route.params.id).update(payload)
+    },
+    voteDown() {
+      const payload = {
+        score: this.post.score,
+        votes: this.post.votes || {}
+      }
+
+      // Case for if ALREADY VOTED
+      if (payload.votes.hasOwnProperty(this.user.uid)) {
+        const isAnUpvote = payload.votes[this.user.uid] === true
+
+        if (isAnUpvote) {
+          payload.score = this.post.score - 2
+          payload.votes[this.user.uid] = false
+        } else {
+          payload.score = this.post.score + 1
+          payload.votes[this.user.uid] = null
+        }
+
+        firebase.database().ref('posts').child(this.$route.params.id).update(payload)
+        return
+      }
+
+      // Base case - NEW VOTE
+      payload.score -= 1
+      payload.votes[this.user.uid] = false
+      firebase.database().ref('posts').child(this.$route.params.id).update(payload)
+    },
+  },
   computed: {
     noPost() {
       return this.post === null
@@ -46,7 +115,15 @@ export default {
     },
     timeFromNow() {
       return moment(this.post.date).fromNow()
-    }
+    },
+    active() {
+      if (this.post.votes) {
+        return !!this.post.votes[this.user.uid]
+      }
+    },
+    ...mapGetters({
+      user: 'currentUser' 
+    })
   },
 }
 </script>
@@ -60,23 +137,77 @@ a {
   cursor: pointer;
 }
 
-.card__header--title > * {
+.card__header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.card__header--left {
+}
+
+.card__scoring {
+  display: grid;
+  justify-items: center;
+  margin-right: 1rem;
+}
+
+.card__scoring--score {
+  font-family: 'Lato';
+  font-size: 1.5rem;
+  color: var(--dark-grey);
+}
+
+.card__scoring--caret {
+  color: var(--cement);
+  font-size: 3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card__scoring--caret-up {
+  margin-bottom: -.8rem;
+}
+
+.card__scoring--caret-up:hover{
+  color: var(--turq);
+}
+
+.card__scoring--caret-down {
+  margin-top: -.8rem;
+}
+.card__scoring--caret-down:hover{
+  color: var(--crimson);
+}
+
+.card__scoring--active-up > * {
+  color: var(--turq);
+}
+
+.card__scoring--active-down > * {
+  color: var(--crimson);
+}
+
+.card__header--main {
+  align-self: center;
+}
+
+.card__title > * {
   font-size: 2rem;
   text-decoration: none;
 }
 
-.card__subheader {
+.card__subtitle {
   margin: .2rem 0;
   font-size: 1.1rem;
   color: var(--dark-grey);
 }
 
-.card__subheader--author {
+.card__subtitle--author {
   font-size: inherit;
   text-decoration: none;
 }
 
-.card__subheader--author:hover {
+.card__subtitle--author:hover {
   text-decoration: underline;
 }
 
@@ -96,6 +227,7 @@ img {
   border-radius: 1rem;
   border: 1px solid var(--dark-grey);
   width: 70rem;
+  white-space: pre-line;
 }
 
 .card__footer--list > li {

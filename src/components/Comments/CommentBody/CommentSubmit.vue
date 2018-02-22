@@ -36,7 +36,7 @@ export default {
   methods: {
     submitComment() {
       firebase.database().ref(`comments/${this.$route.params.id}`).push({
-        points: 0,
+        score: 0,
         date: firebase.database.ServerValue.TIMESTAMP,
         comment: this.comment,
         author_id: this.user.uid
