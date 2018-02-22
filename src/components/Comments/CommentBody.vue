@@ -1,6 +1,6 @@
 <template>
   <div class="CommentBody">
-    <CommentSubmit />
+    <CommentSubmit :commentsLength="commentsLength" />
     <CommentList :comments="comments" />
   </div>
 </template>
@@ -14,14 +14,18 @@ export default {
   props: ['comments'],
   components: { CommentList, CommentSubmit },
   computed: {
-    noComments() {
-      return this.comment === null 
-        ? 'There are no comments (yet).'
-        : null
+    commentsLength() {
+      return this.comments !== null
+        ? Object.keys(this.comments).length
+        : 0
     }
   }
 }
 </script>
 
 <style scoped>
+.CommentBody > * {
+  margin-bottom: 2rem;
+}
 </style>
+

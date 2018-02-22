@@ -13,7 +13,10 @@
         <h3>Title</h3>
         <textarea v-model="title" type="text"></textarea>
       </label>
-      <button class="post__button" @click="submitPost">Submit</button>
+      <div class="post__buttons">
+        <button class="post__button" @click="submitPost">Submit</button>
+        <button class="post__button" @click="test">Test</button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,8 +27,6 @@ import firebase from 'firebase'
 
 export default {
   name: 'PostLink',
-  created() {
-  },
   computed: {
     ...mapGetters({
       user: 'currentUser' 
@@ -40,14 +41,32 @@ export default {
   },
   methods: {
     submitPost() {
-      firebase.database().ref('posts').push({
+      const pushDataAndReturnKey = firebase.database().ref('posts').push({
         link: this.link,
-        //img: this.img,
-        img: 'http://via.placeholder.com/160x80',
+        img: this.img,
+        //img: 'http://via.placeholder.com/160x80',
         title: this.title,
         date: firebase.database.ServerValue.TIMESTAMP,
+        score: 0,
+        votes: {},
         author_id: this.user.uid
-      })
+      }).key
+
+      this.$router.push(`/comments/${pushDataAndReturnKey}`)
+    },
+    test() {
+      const key = firebase.database().ref('posts').push({
+        link: 'https://vignette.wikia.nocookie.net/steven-universe/images/b/b9/PepoGun.png',
+        img: 'https://vignette.wikia.nocookie.net/steven-universe/images/b/b9/PepoGun.png',
+        //img: 'http://via.placeholder.com/160x80',
+        title: 'PepoGun.jpg',
+        date: firebase.database.ServerValue.TIMESTAMP,
+        score: 0,
+        votes: {},
+        author_id: this.user.uid
+      }).key
+
+      this.$router.push(`/comments/${key}`)
     }
   }
 }
@@ -102,6 +121,11 @@ h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
+}
+
+.post__buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .post__button {

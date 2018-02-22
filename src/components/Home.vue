@@ -2,7 +2,6 @@
   <div class="Home">
     <HeaderCard class="header-card" :headerCardOptions="config" />
     <PostList class="post-list" />
-    <router-link to="/post"><button>Create New Post</button></router-link>
   </div>
 </template>
 
@@ -25,8 +24,6 @@ export default {
       }
     }
   },
-  methods: {
-  }
 }
 </script>
 

@@ -63,10 +63,12 @@ a:not(:last-child) {
 }
 
 .navi {
+  /*
   background-image: url('../assets/header-bg.jpeg');
   background-size: cover;
   background-position: center;
-  background-color: var(--dark-blue);
+  */
+  background-color: var(--navy);
 
   display: grid;
   grid-template-rows: 4.5rem 1fr;

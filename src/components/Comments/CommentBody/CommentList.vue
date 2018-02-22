@@ -30,6 +30,10 @@ export default {
 </script>
 
 <style scoped>
+.card:not(:first-child) {
+  margin-top: 1rem;
+}
+
 .card__header {
   display: flex;
 }
@@ -41,8 +45,13 @@ export default {
 }
 
 .card__header--points {
+  margin-left: 0.5rem;
   font-size: 1.1rem;
   color: var(--dark-grey);
+}
+
+.card__body--text {
+  padding-top: 0.5rem;
 }
 
 .card__footer--actions > li {
@@ -51,5 +60,9 @@ export default {
   color: var(--dark-grey);
   font-weight: 700;
   cursor: pointer;
+}
+
+.card__footer--actions > li:hover {
+  text-decoration: underline;
 }
 </style>

@@ -13,7 +13,10 @@
         <h3>Thumbnail</h3>
         <input v-model="thumb" type="text">
       </label>
-      <button class="post__button" @click="submitPost">Submit</button>
+      <div class="post__buttons">
+        <button class="post__button" @click="submitPost">Submit</button>
+        <button class="post__button" @click="test">test</button>
+      </div>
     </div>
   </div>
 </template>
@@ -40,14 +43,32 @@ export default {
   },
   methods: {
     submitPost() {
-      firebase.database().ref('posts').push({
+      const pushDataAndReturnKey = firebase.database().ref('posts').push({
         thumb: this.thumb,
         title: this.title,
         img: 'http://via.placeholder.com/160x80',
         body: this.body,
         date: firebase.database.ServerValue.TIMESTAMP,
+        score: 0,
+        votes: {},
         author_id: this.user.uid
-      })
+      }).key
+
+      this.$router.push(`/comments/${pushDataAndReturnKey}`)
+    },
+    test() {
+      const key = firebase.database().ref('posts').push({
+        thumb: this.thumb,
+        title: 'A Lorem Text Post',
+        img: 'http://via.placeholder.com/160x80',
+        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        date: firebase.database.ServerValue.TIMESTAMP,
+        score: 0,
+        votes: {},
+        author_id: this.user.uid
+      }).key
+
+      this.$router.push(`/comments/${key}`)
     }
   }
 }
@@ -102,6 +123,11 @@ h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
+}
+
+.post__buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .post__button {

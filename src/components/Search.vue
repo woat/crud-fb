@@ -31,6 +31,7 @@ export default {
   font-weight: 600;
   margin-left: 10rem;
   width: 30rem;
+  border: 1px solid var(--cement);
 } 
 
 .search__bar::placeholder {

@@ -1,8 +1,10 @@
 <template>
   <div class="Comments">
     <HeaderCard :headerCardOptions="config" />
-    <PostBody :post="postData" />
-    <CommentBody :comments="commentData" />
+    <div class="wrapper">
+      <PostBody class="PostBody" :post="postData" />
+      <CommentBody :comments="commentData" />
+    </div>
   </div>
 </template>
 
@@ -32,7 +34,6 @@ export default {
         this.config = {
           title: snap.val().title
         }
-
         this.postData = snap.val()
       })
     },
@@ -48,5 +49,13 @@ export default {
 <style scoped>
 .Comments {
   background: white;
+}
+
+.PostBody {
+  margin-bottom: 2rem;
+}
+
+.wrapper {
+  padding: 2rem;
 }
 </style>

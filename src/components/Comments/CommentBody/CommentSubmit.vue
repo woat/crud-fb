@@ -1,5 +1,6 @@
 <template>
   <div class="CommentSubmit">
+    <h1>{{ displayCommentsLength }}</h1>
     <div class="submit">
       <textarea v-model="comment" class="submit__input"></textarea>
       <div class="submit__actions">
@@ -15,10 +16,17 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'CommentSubmit',
+  props: ['commentsLength'],
   computed: {
     ...mapGetters({
       user: 'currentUser' 
-    })
+    }),
+    displayCommentsLength() {
+      return this.commentsLength > 0
+        ? `All ${this.commentsLength} comments`
+        : 'No comments (yet)'
+
+    }
   },
   data() {
     return {
@@ -39,6 +47,12 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-weight: 400;
+  border-bottom: 1px dotted var(--dark-grey);
+  margin-bottom: 2rem;
+}
+
 .submit {
   width: 40rem;
 }
@@ -49,6 +63,7 @@ export default {
 }
 
 .submit__actions {
+  margin-top: 1rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
