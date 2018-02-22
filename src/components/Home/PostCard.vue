@@ -28,6 +28,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
+import voting from '@/helpers/voting'
 
 export default {
   created() {
@@ -53,59 +54,11 @@ export default {
       firebase.database().ref('posts').child(this.postKey).remove()
     },
     voteUp() {
-      const payload = {
-        score: this.post.score,
-        votes: this.post.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isADownvote = payload.votes[this.user.uid] === false
-
-        if (isADownvote) {
-          payload.score = this.post.score + 2
-          payload.votes[this.user.uid] = true
-        } else {
-          payload.score = this.post.score - 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref('posts').child(this.postKey).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score += 1
-      payload.votes[this.user.uid] = true
-      firebase.database().ref('posts').child(this.postKey).update(payload)
+      voting.voteUp(this, this.post, `posts/${this.postKey}`)
     },
     voteDown() {
-      const payload = {
-        score: this.post.score,
-        votes: this.post.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isAnUpvote = payload.votes[this.user.uid] === true
-
-        if (isAnUpvote) {
-          payload.score = this.post.score - 2
-          payload.votes[this.user.uid] = false
-        } else {
-          payload.score = this.post.score + 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref('posts').child(this.postKey).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score -= 1
-      payload.votes[this.user.uid] = false
-      firebase.database().ref('posts').child(this.postKey).update(payload)
-    },
+      voting.voteDown(this, this.post, `posts/${this.postKey}`)
+    }
   },
   computed: {
     displayCommentsLength() {

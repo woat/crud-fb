@@ -33,6 +33,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
+import voting from '@/helpers/voting'
 
 export default {
   name: 'CommentCard',

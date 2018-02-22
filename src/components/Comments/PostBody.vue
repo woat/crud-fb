@@ -44,11 +44,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
+import voting from '@/helpers/voting'
+import convertIdTo from '@/helpers/convertIdTo'
 
 export default {
-  created() {
-    this.getUsernameFromAuthor()
-  },
   name: 'PostBody',
   props: ['post'],
   data() {
@@ -57,68 +56,20 @@ export default {
     }
   },
   methods: {
-    getUsernameFromAuthor() {
-      firebase
-        .database()
-        .ref(`users/${this.post.author_id}`)
-        .once('value', (snap) => {
-          this.username = snap.val().username
-      })
+    test() {
+      convertIdTo.username(this.post.author_id).then(username => this.username = username )
     },
     voteUp() {
-      const payload = {
-        score: this.post.score,
-        votes: this.post.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isADownvote = payload.votes[this.user.uid] === false
-
-        if (isADownvote) {
-          payload.score = this.post.score + 2
-          payload.votes[this.user.uid] = true
-        } else {
-          payload.score = this.post.score - 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref('posts').child(this.$route.params.id).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score += 1
-      payload.votes[this.user.uid] = true
-      firebase.database().ref('posts').child(this.$route.params.id).update(payload)
+      voting.voteUp(this, this.post, `posts/${this.$route.params.id}`)
     },
     voteDown() {
-      const payload = {
-        score: this.post.score,
-        votes: this.post.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isAnUpvote = payload.votes[this.user.uid] === true
-
-        if (isAnUpvote) {
-          payload.score = this.post.score - 2
-          payload.votes[this.user.uid] = false
-        } else {
-          payload.score = this.post.score + 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref('posts').child(this.$route.params.id).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score -= 1
-      payload.votes[this.user.uid] = false
-      firebase.database().ref('posts').child(this.$route.params.id).update(payload)
-    },
+      voting.voteDown(this, this.post, `posts/${this.$route.params.id}`)
+    }
+  },
+  watch: {
+    post() {
+      this.test()
+    }
   },
   computed: {
     noPost() {
