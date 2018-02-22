@@ -60,8 +60,16 @@ export default {
 
       // Case for if ALREADY VOTED
       if (payload.votes.hasOwnProperty(this.user.uid)) {
-        payload.score = this.post.score - 1
-        payload.votes[this.user.uid] = null
+        const isADownvote = payload.votes[this.user.uid] === false
+
+        if (isADownvote) {
+          payload.score = this.post.score + 2
+          payload.votes[this.user.uid] = true
+        } else {
+          payload.score = this.post.score - 1
+          payload.votes[this.user.uid] = null
+        }
+
         firebase.database().ref('posts').child(this.postKey).update(payload)
         return
       }
@@ -79,15 +87,23 @@ export default {
 
       // Case for if ALREADY VOTED
       if (payload.votes.hasOwnProperty(this.user.uid)) {
-        payload.score = this.post.score + 1
-        payload.votes[this.user.uid] = null
+        const isAnUpvote = payload.votes[this.user.uid] === true
+
+        if (isAnUpvote) {
+          payload.score = this.post.score - 2
+          payload.votes[this.user.uid] = false
+        } else {
+          payload.score = this.post.score + 1
+          payload.votes[this.user.uid] = null
+        }
+
         firebase.database().ref('posts').child(this.postKey).update(payload)
         return
       }
 
       // Base case - NEW VOTE
       payload.score -= 1
-      payload.votes[this.user.uid] = true
+      payload.votes[this.user.uid] = false
       firebase.database().ref('posts').child(this.postKey).update(payload)
     }
   },
