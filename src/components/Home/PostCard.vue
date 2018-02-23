@@ -13,7 +13,7 @@
       <img class="card__image" :src="post.img" />
       <div class="card__info">
         <router-link class="card__info--title" :to="{ path: `comments/${postKey}` }">{{ post.title }}</router-link>
-        <div class="card__info--subheader">submitted {{ timeFromNow }} by <router-link to="#">{{ post.author_id }}</router-link></div>
+        <div class="card__info--subheader">submitted {{ timeFromNow }} by <router-link to="#">{{ username }}</router-link></div>
         <ul class="card__info--lower">
           <li>{{ displayCommentsLength }}</li>
           <li>share</li>
@@ -28,7 +28,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import voting from '@/helpers/voting'
+import voting from '@/utils/voting'
+import convertIdTo from '@/utils/convertIdTo'
 
 export default {
   created() {
@@ -36,12 +37,22 @@ export default {
       if (snap.val() === null) return
       this.commentsLength = Object.keys(snap.val()).length
     })
+
+    if (this.post.hasOwnProperty('author_id')) {
+      this.initUsername(this.post.author_id)
+    }
+  },
+  watch: {
+    post(val) {
+      this.initUsername(val.author_id)
+    }
   },
   name: 'PostCard',
   props: ['post', 'postKey'],
   data() {
     return {
-      commentsLength: 0
+      commentsLength: 0,
+      username: ''
     }
   },
   methods: {
@@ -49,6 +60,9 @@ export default {
       firebase.database().ref('posts').child(this.postKey).update({
         body: 'owo'
       })
+    },
+    initUsername(id) {
+      convertIdTo.username(id).then(username => this.username = username )
     },
     removePost() {
       firebase.database().ref('posts').child(this.postKey).remove()

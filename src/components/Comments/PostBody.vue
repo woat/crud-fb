@@ -44,10 +44,20 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import voting from '@/helpers/voting'
-import convertIdTo from '@/helpers/convertIdTo'
+import voting from '@/utils/voting'
+import convertIdTo from '@/utils/convertIdTo'
 
 export default {
+  created() {
+    if (this.post.hasOwnProperty('author_id')) {
+      this.initUsername(this.post.author_id)
+    }
+  },
+  watch: {
+    post(val) {
+      this.initUsername(val.author_id)
+    }
+  },
   name: 'PostBody',
   props: ['post'],
   data() {
@@ -56,19 +66,14 @@ export default {
     }
   },
   methods: {
-    test() {
-      convertIdTo.username(this.post.author_id).then(username => this.username = username )
+    initUsername(id) {
+      convertIdTo.username(id).then(username => this.username = username )
     },
     voteUp() {
       voting.voteUp(this, this.post, `posts/${this.$route.params.id}`)
     },
     voteDown() {
       voting.voteDown(this, this.post, `posts/${this.$route.params.id}`)
-    }
-  },
-  watch: {
-    post() {
-      this.test()
     }
   },
   computed: {

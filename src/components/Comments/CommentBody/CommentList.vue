@@ -5,6 +5,7 @@
       v-for="(comment, commentKey) in comments" 
       :comment="comment" 
       :commentKey="commentKey"
+      :key="commentKey"
       />
   </div>
 </template>

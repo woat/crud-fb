@@ -11,7 +11,7 @@
       </div>
       <div class="card__main">
         <div class="card__header">
-          <div class="card__header--username">{{ comment.author_id }}</div>
+          <div class="card__header--username">{{ username }}</div>
           <div class="card__header--points">{{ comment.score }} points {{ timeFromNow }}</div>
         </div>
         <div class="card__body">
@@ -33,66 +33,37 @@
 <script>
 import { mapGetters } from 'vuex'
 import moment from 'moment'
-import voting from '@/helpers/voting'
+import voting from '@/utils/voting'
+import convertIdTo from '@/utils/convertIdTo'
 
 export default {
+  created() {
+    if (this.comment.hasOwnProperty('author_id')) {
+      this.initUsername(this.comment.author_id)
+    }
+  },
+  watch: {
+    comment(val) {
+      this.initUsername(val.author_id)
+    }
+  },
+  data() {
+    return {
+      username: ''
+    }
+  },
   name: 'CommentCard',
   props: ['comment', 'commentKey'],
   methods: {
+    initUsername(id) {
+      convertIdTo.username(id).then(username => this.username = username )
+    },
     voteUp() {
-      const payload = {
-        score: this.comment.score,
-        votes: this.comment.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isADownvote = payload.votes[this.user.uid] === false
-
-        if (isADownvote) {
-          payload.score = this.comment.score + 2
-          payload.votes[this.user.uid] = true
-        } else {
-          payload.score = this.comment.score - 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref(`comments/${this.$route.params.id}`).child(this.commentKey).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score += 1
-      payload.votes[this.user.uid] = true
-      firebase.database().ref(`comments/${this.$route.params.id}`).child(this.commentKey).update(payload)
+      voting.voteUp(this, this.comment, `comments/${this.$route.params.id}/${this.commentKey}`)
     },
     voteDown() {
-      const payload = {
-        score: this.comment.score,
-        votes: this.comment.votes || {}
-      }
-
-      // Case for if ALREADY VOTED
-      if (payload.votes.hasOwnProperty(this.user.uid)) {
-        const isAnUpvote = payload.votes[this.user.uid] === true
-
-        if (isAnUpvote) {
-          payload.score = this.comment.score - 2
-          payload.votes[this.user.uid] = false
-        } else {
-          payload.score = this.comment.score + 1
-          payload.votes[this.user.uid] = null
-        }
-
-        firebase.database().ref(`comments/${this.$route.params.id}`).child(this.commentKey).update(payload)
-        return
-      }
-
-      // Base case - NEW VOTE
-      payload.score -= 1
-      payload.votes[this.user.uid] = false
-      firebase.database().ref(`comments/${this.$route.params.id}`).child(this.commentKey).update(payload)
-    },
+      voting.voteDown(this, this.comment, `comments/${this.$route.params.id}/${this.commentKey}`)
+    }
   },
   computed: {
     timeFromNow() {
