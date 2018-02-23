@@ -2,10 +2,10 @@
   <div class="navi">
     <div class="navi__bar">
       <div class="navi__bar--left">
-        <router-link to="/home">My Subreddits</router-link>
+        <router-link to="/home">{{ user ? 'Home' : 'Welcome Back!'}}</router-link>
+        <router-link to="/profile">{{ cu.displayName }}</router-link>
       </div>
       <div>
-        <h1 style="color: red">logged: {{ user }} // uid: {{ cu.uid }}</h1>
        </div>
       <div class="navi__bar--right">
         <router-link v-if="!user" to="/login">Login</router-link>
@@ -60,6 +60,10 @@ a {
   line-height: 1rem;
   padding-top: 1px;
   cursor: pointer;
+}
+
+a:hover {
+  color: var(--super-grey);
 }
 
 a:not(:last-child) {

@@ -1,12 +1,12 @@
 <template>
   <div class="PostList">
-    <ol>
+    <ul>
       <!-- TODO POST_CARD -->
       <!-- TODO POST_MODAL (EDIT) -->
       <li v-for="(post, key) in posts">
         <PostCard :post="post" :postKey="key" />
       </li>
-    </ol>
+    </ul>
   </div>
 </template>
 
@@ -34,3 +34,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ul {
+  list-style-type: none;
+}
+</style>

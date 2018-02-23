@@ -56,10 +56,9 @@ export default {
     },
     test() {
       const key = firebase.database().ref('posts').push({
-        link: 'https://vignette.wikia.nocookie.net/steven-universe/images/b/b9/PepoGun.png',
-        img: 'https://vignette.wikia.nocookie.net/steven-universe/images/b/b9/PepoGun.png',
-        //img: 'http://via.placeholder.com/160x80',
-        title: 'PepoGun.jpg',
+        link: 'https://www.wildlifearchives.com/pin/85/',
+        img: 'https://www.wildlifearchives.com/wp-content/uploads/2016/01/peak-mountain-1453580627g4n8k-1280x854.jpg',
+        title: 'Matterhorn. Peak mountain. What else?',
         date: firebase.database.ServerValue.TIMESTAMP,
         score: 0,
         votes: {},

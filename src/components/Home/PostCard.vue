@@ -10,12 +10,38 @@
           <i class="card__scoring--caret card__scoring--caret-down fas fa-caret-down"></i>
         </div>
       </div>
-      <img class="card__image" :src="post.img" />
+      <img class="card__image" v-if="post.img" :src="post.img" />
+      <div class="card__image" v-else>
+        <div class="speech">
+          <div class="line line__head"></div>
+          <div class="line"></div>
+          <div class="line__break line__break--1">
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="line__break line__break--2">
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="line__break line__break--3">
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="line__break line__break--4">
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div> 
+      </div>
       <div class="card__info">
         <router-link class="card__info--title" :to="{ path: `comments/${postKey}` }">{{ post.title }}</router-link>
         <div class="card__info--subheader">submitted {{ timeFromNow }} by <router-link :to="{path: `/profile/${username}`}">{{ username }}</router-link></div>
         <ul class="card__info--lower">
-          <li>{{ displayCommentsLength }}</li>
+          <li>
+            <router-link class="card__info--link" :to="{ path: `comments/${postKey}` }">
+            {{ displayCommentsLength }}
+              </router-link>
+          </li>
           <li>share</li>
         </ul>
         <button @click="removePost()">remove</button>
@@ -193,5 +219,58 @@ export default {
 .card__info--lower > *:not(:first-child) {
   margin-left: 3px;
 }
+
+.card__info--link {
+  all: inherit;
+}
+
+.speech {
+	height: 8rem;
+	width: 16rem;
+	position: relative;
+	padding: 1rem;
+}
+
+.line {
+	height: .5rem;
+	width: 14rem;
+	background: var(--light-blue);
+	box-shadow: 0 2px 4px rgb(0,0,0,.2);
+	border-radius: 5rem;
+	margin-top: .6rem;
+}
+
+.line__head {
+	width: 4rem;
+	margin: 0;
+}
+
+.line__break {
+	display: flex;
+}
+
+.line__break > *:first-child {
+	margin-right: .5rem;
+}
+
+.line__break--1 > *:first-child {
+	background: var(--dark-grey);
+	width: 10rem;
+}
+
+.line__break--2 > *:first-child {
+	width: 90rem;
+	background: var(--cement);
+}
+
+.line__break--3 > *:first-child {
+	background: var(--dark-grey);
+	width: 2rem
+}
+
+.line__break--4 > *:last-child {
+	background: var(--cement);
+}
+
 
 </style>

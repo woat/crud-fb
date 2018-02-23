@@ -110,107 +110,107 @@ a {
 }
 
 .card__header {
-  display: grid;
-  grid-template-columns: auto 1fr;
+	display: grid;
+	grid-template-columns: auto 1fr;
 }
 
 .card__header--left {
 }
 
 .card__scoring {
-  display: grid;
-  justify-items: center;
-  margin-right: 1rem;
+	display: grid;
+	justify-items: center;
+	margin-right: 1rem;
 }
 
 .card__scoring--score {
-  font-family: 'Lato';
-  font-size: 1.5rem;
-  color: var(--dark-grey);
+	font-family: 'Lato';
+	font-size: 1.5rem;
+	color: var(--dark-grey);
 }
 
 .card__scoring--caret {
-  color: var(--cement);
-  font-size: 3rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+	color: var(--cement);
+	font-size: 3rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .card__scoring--caret-up {
-  margin-bottom: -.8rem;
+	margin-bottom: -.8rem;
 }
 
 .card__scoring--caret-up:hover{
-  color: var(--turq);
+	color: var(--turq);
 }
 
 .card__scoring--caret-down {
-  margin-top: -.8rem;
+	margin-top: -.8rem;
 }
 .card__scoring--caret-down:hover{
-  color: var(--crimson);
+	color: var(--crimson);
 }
 
 .card__scoring--active-up > * {
-  color: var(--turq);
+	color: var(--turq);
 }
 
 .card__scoring--active-down > * {
-  color: var(--crimson);
+	color: var(--crimson);
 }
 
 .card__header--main {
-  align-self: center;
+	align-self: center;
 }
 
 .card__title > * {
-  font-size: 2rem;
-  text-decoration: none;
+	font-size: 2rem;
+	text-decoration: none;
 }
 
 .card__subtitle {
-  margin: .2rem 0;
-  font-size: 1.1rem;
-  color: var(--dark-grey);
+	margin: .2rem 0;
+	font-size: 1.1rem;
+	color: var(--dark-grey);
 }
 
 .card__subtitle--author {
-  font-size: inherit;
-  text-decoration: none;
+	font-size: inherit;
+	text-decoration: none;
 }
 
 .card__subtitle--author:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .card__body--image {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 img {
-  max-width: 100%;
+	max-width: 100%;
 }
 
 .card__body--text {
-  line-height: 2.2rem;
-  font-size: 1.6rem;
-  background-color: var(--super-grey);
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1px solid var(--dark-grey);
-  width: 70rem;
-  white-space: pre-line;
+	line-height: 2.2rem;
+	font-size: 1.6rem;
+	background-color: var(--super-grey);
+	padding: 1rem;
+	border-radius: 1rem;
+	border: 1px solid var(--dark-grey);
+	width: 70rem;
+	white-space: pre-line;
 }
 
 .card__footer--list > li {
-  display: inline-block;
-  font-size: 1.1rem;
-  color: var(--dark-grey);
-  font-weight: 700;
-  cursor: pointer;
+	display: inline-block;
+	font-size: 1.1rem;
+	color: var(--dark-grey);
+	font-weight: 700;
+	cursor: pointer;
 }
 
 .card__footer--list > li:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 </style>

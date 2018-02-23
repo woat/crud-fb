@@ -10,8 +10,8 @@
         <textarea v-model="body" type="text"></textarea>
       </label>
       <label>
-        <h3>Thumbnail</h3>
-        <input v-model="thumb" type="text">
+        <h3>Thumbnail (optional)</h3>
+        <input v-model="img" type="text">
       </label>
       <div class="post__buttons">
         <button class="post__button" @click="submitPost">Submit</button>
@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      thumb: '',
+      img: '',
       title: '',
       body: ''
     }
@@ -44,9 +44,8 @@ export default {
   methods: {
     submitPost() {
       const pushDataAndReturnKey = firebase.database().ref('posts').push({
-        thumb: this.thumb,
+        // img: this.img,
         title: this.title,
-        img: 'http://via.placeholder.com/160x80',
         body: this.body,
         date: firebase.database.ServerValue.TIMESTAMP,
         score: 0,
@@ -58,10 +57,8 @@ export default {
     },
     test() {
       const key = firebase.database().ref('posts').push({
-        thumb: this.thumb,
-        title: 'A Lorem Text Post',
-        img: 'http://via.placeholder.com/160x80',
-        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        title: 'Vue vs React vs Angular? Which one is best?',
+        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         date: firebase.database.ServerValue.TIMESTAMP,
         score: 0,
         votes: {},
