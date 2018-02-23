@@ -13,7 +13,7 @@
       <img class="card__image" :src="post.img" />
       <div class="card__info">
         <router-link class="card__info--title" :to="{ path: `comments/${postKey}` }">{{ post.title }}</router-link>
-        <div class="card__info--subheader">submitted {{ timeFromNow }} by <router-link to="#">{{ username }}</router-link></div>
+        <div class="card__info--subheader">submitted {{ timeFromNow }} by <router-link :to="{path: `/profile/${username}`}">{{ username }}</router-link></div>
         <ul class="card__info--lower">
           <li>{{ displayCommentsLength }}</li>
           <li>share</li>

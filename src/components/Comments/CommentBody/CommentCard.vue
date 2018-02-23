@@ -11,7 +11,7 @@
       </div>
       <div class="card__main">
         <div class="card__header">
-          <div class="card__header--username">{{ username }}</div>
+          <router-link class="card__header--username" :to="{path: `/profile/${username}`}">{{ username }}</router-link>
           <div class="card__header--points">{{ comment.score }} points {{ timeFromNow }}</div>
         </div>
         <div class="card__body">
@@ -137,8 +137,14 @@ export default {
 
 .card__header--username {
   color: var(--dark-turq);
+  text-decoration: none;
   font-weight: 700;
   font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.card__header--username:hover {
+  text-decoration: underline;
 }
 
 .card__header--points {
