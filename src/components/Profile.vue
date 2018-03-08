@@ -1,6 +1,11 @@
 <template>
   <div class="Profile">
-    <h1>{{ user }}</h1>
+    <h1>{{ user.username }}</h1>
+    <h1>{{ user.email }}</h1>
+    <h1>{{ user.avatar}}</h1>
+    <img :src="user.avatar">
+    <input v-model="avatarUrl" type="text">
+    <button @click="uploadAvatar">upload</button>
   </div>
 </template>
 
@@ -15,7 +20,8 @@ export default {
   data() {
     return {
       uid: '',
-      user: 'Profile could not be found.'
+      user: 'Profile could not be found.',
+      avatarUrl: ''
     }
   },
   methods: {
@@ -26,9 +32,20 @@ export default {
         .ref('users')
         .orderByChild('username')
         .equalTo(username)
-        .once('value', (snap) => {
-          this.user = snap.val()[Object.keys(snap.val())[0]]
-      })
+        .on('value', (snap) => {
+          const user = snap.val()
+          const uid = Object.keys(user)[0]
+          this.user = user[uid]
+          this.uid = uid
+        })
+    },
+    uploadAvatar() {
+      firebase
+        .database()
+        .ref(`users/${this.uid}`)
+        .update({
+          avatar: this.avatarUrl
+        })
     }
   },
   watch: {
