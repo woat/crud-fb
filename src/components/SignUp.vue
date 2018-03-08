@@ -126,13 +126,15 @@ input {
   margin: 1rem 0;
   padding: 1rem 2rem;
   border: 0;
-  border-bottom: 1px solid var(--light-grey);
+  border-radius: 2px;
+  border-bottom: 3px solid var(--grey);
   width: 100%;
-  transition: all 0.2s ease;
+  transition: all 0.3s;
 }
 
 input:focus {
-  border-image: linear-gradient(to right, var(--turq), var(--light-grey)) 10;
+  outline: none;
+  transition: all 0.9s ease;
   border-bottom: 3px solid var(--turq);
 }
 
