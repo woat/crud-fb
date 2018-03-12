@@ -6,7 +6,9 @@
 
 This is a simple CRUD app built with Vue.js and Firebase with Authentication.
 
-> You must logij
+> - Users can create, read, upload, and delete various data within the app.
+> - Quick login provided to mitigate sign-up/log-in procedure.
+> - Navigation/Authentication guards are in place and active.
 
 ## Build Setup
 
