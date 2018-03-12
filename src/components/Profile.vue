@@ -1,11 +1,16 @@
 <template>
   <div class="Profile">
-    <h1>{{ user.username }}</h1>
-    <h1>{{ user.email }}</h1>
-    <h1>{{ user.avatar}}</h1>
-    <img :src="user.avatar">
-    <input v-model="avatarUrl" type="text">
-    <button @click="uploadAvatar">upload</button>
+    <div class="profile__header">
+      <img class="profile__picture" :src="user.avatar">
+      <!--
+      <input v-model="avatarUrl" type="text">
+      <button @click="uploadAvatar">upload</button>
+      <button @click="removeAvatar">remove</button>
+      -->
+      <h1 class="profile__username">{{ user.username }}</h1>
+      <h1 class="profile__email">{{ user.email }}</h1>
+      <p class="profile__about">{{ user.about }}</p>
+    </div>
   </div>
 </template>
 
@@ -46,6 +51,14 @@ export default {
         .update({
           avatar: this.avatarUrl
         })
+    },
+    removeAvatar() {
+      firebase
+        .database()
+        .ref(`users/${this.uid}`)
+        .update({
+          avatar: 'http://via.placeholder.com/200x200'
+        })
     }
   },
   watch: {
@@ -64,5 +77,29 @@ export default {
 <style scoped>
 .Profile {
   background-color: white;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.profile__header {
+  display: grid;
+  grid-gap: 2rem;
+  justify-items: center;
+}
+
+.profile__username {
+  font-size: 3rem;
+}
+
+.profile__email {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--cement);
+}
+
+.profile__about {
+  font-style: italic;
+  color: var(--dark-blue);
 }
 </style>

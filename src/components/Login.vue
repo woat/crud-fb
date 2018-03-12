@@ -23,7 +23,7 @@
         <h3 class="profile__text">Big_Shaq1</h3>
         </div>
       </div>
-      <div class="profile">
+      <div class="profile" @click="lilpump">
         <div class="profile__card">
           <img class="profile__picture" src="https://pm1.narvii.com/6648/584adb35cb505a1fa2436f3ca22d58ad68ac05a8_128.jpg" />
         <h3 class="profile__text">Lil_Pump99</h3>
@@ -49,6 +49,30 @@ export default {
   },
   methods: {
     signIn() {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          this.$store.commit('loginUser', user)
+          this.$router.push('home')
+        },
+        (err) => {
+          console.log(err)
+        })
+    },
+    bigshaq() {
+      this.email = 'big@shaq.com'
+      this.password = 'cleartext'
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        (user) => {
+          this.$store.commit('loginUser', user)
+          this.$router.push('home')
+        },
+        (err) => {
+          console.log(err)
+        })
+    },
+    lilpump() {
+      this.email = 'lil@pump.com'
+      this.password = 'cleartext'
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           this.$store.commit('loginUser', user)

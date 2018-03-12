@@ -44,7 +44,9 @@ export default {
           user.updateProfile({ displayName: this.username })
           firebase.database().ref(`users/${user.uid}`).set({
             username: this.username,
-            email: userInfo.email
+            email: userInfo.email,
+            avatar: 'http://via.placeholder.com/200x200',
+            about: 'This user has decided to keep a mysterious persona.'
           })
           this.$store.commit('loginUser', user)
           this.$router.push('home')

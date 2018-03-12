@@ -3,7 +3,7 @@
     <div class="navi__bar">
       <div class="navi__bar--left">
         <router-link to="/home">{{ user ? 'Home' : 'Welcome Back!'}}</router-link>
-        <router-link to="/profile">{{ cu.displayName }}</router-link>
+        <router-link to="/profile">{{ cu.displayName }} - My Account</router-link>
       </div>
       <div>
        </div>
